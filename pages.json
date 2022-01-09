@@ -12,8 +12,19 @@
     }, {
       "path": "pages/mine/mine",
       "style": {}
-    }
-  ],
+    }],
+    "subPackages":[{
+      "root":"subpkg",
+      "pages":[{
+                    "path" : "goods_detail/goods_detail",
+                    "style" : {}
+                }
+                ,{
+                    "path" : "goods_list/goods_list",
+                    "style" : {}
+                }
+            ]
+    }],
   "globalStyle": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "天天优购",
