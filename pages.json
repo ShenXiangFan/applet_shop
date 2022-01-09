@@ -23,12 +23,16 @@
                     "path" : "goods_list/goods_list",
                     "style" : {}
                 }
+                ,{
+                    "path" : "search/search",
+                    "style" : {}
+                }
             ]
     }],
   "globalStyle": {
-    "navigationBarTextStyle": "black",
+    "navigationBarTextStyle": "white",
     "navigationBarTitleText": "天天优购",
-    "navigationBarBackgroundColor": "#F8F8F8",
+    "navigationBarBackgroundColor": "#F33",
     "backgroundColor": "#F8F8F8"
   },
   "tabBar": {

@@ -14,7 +14,13 @@ $http.afterRequest = function() {
   uni.hideLoading()
 }
 Vue.config.productionTip = false
-
+uni.$showMsg=function(title='数据加载失败',duration=1500){
+  uni.showLoading({
+    title,
+    duration,
+    icon:'none'
+  })
+}
 App.mpType = 'app'
 
 const app = new Vue({
