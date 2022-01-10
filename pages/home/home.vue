@@ -19,7 +19,7 @@
     <!-- 渲染楼层数据 -->
     <view class="floor-list">
       <!-- 楼层的每一项 -->
-      <view class="floor-item" v-for="(item,index) in floorList" :key="index" @click="floorHandler(item)">
+      <view class="floor-item" v-for="(item,index) in floorList" :key="index">
         <!-- 楼层得标题 -->
         <image :src="item.floor_title.image_src" class="floor-title"></image>
         <!-- 楼层的图片区域 -->
@@ -97,7 +97,7 @@
         uni.navigateTo({
           url:'../../subpkg/search/search'
         })
-      }
+      },
     },
     onLoad() {
       this.getSwiperList()
