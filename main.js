@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App'
 import { $http } from '@escook/request-miniprogram'
+import store from './store'
 uni.$http = $http
 $http.baseUrl = 'https://www.uinav.com'
 // 请求拦截器
@@ -22,8 +23,9 @@ uni.$showMsg=function(title='数据加载失败',duration=1500){
   })
 }
 App.mpType = 'app'
-
+Vue.prototype.$store = store
 const app = new Vue({
+  store,
   ...App
 })
 app.$mount()
