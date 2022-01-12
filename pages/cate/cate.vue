@@ -25,7 +25,6 @@
           </view>
         </view>
         <!-- 视图区域 -->
-        
       </scroll-view>
     </view>
   </view>

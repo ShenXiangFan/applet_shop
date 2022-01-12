@@ -1,6 +1,8 @@
 <template>
   <view>
-    <goods-list1 :goodsList="goodsList" @itemGotoDetail="itemGotoDetail"></goods-list1>
+    <view v-for="(item,index) in goodsList" :key="index">  
+      <goods-list1 :goodsList="item" @itemGotoDetail="itemGotoDetail"></goods-list1>
+    </view>
   </view>
 </template>
 
