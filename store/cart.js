@@ -10,6 +10,9 @@ const actions = {
   },
   deleteGoods(context, data) {
     context.commit('DELETEGOODS', data)
+  },
+  changeAllTag(context,data){
+    context.commit('CHANGEALLTAG', data)
   }
 }
 const mutations = {
@@ -48,19 +51,40 @@ const mutations = {
     })
     state.cart=findResult
     uni.setStorageSync('cart', JSON.stringify(state.cart)) 
+  },
+  CHANGEALLTAG(state,data){
+    state.cart.map(item=>{
+      return item.goods_state=data
+    })
+    uni.setStorageSync('cart', JSON.stringify(state.cart))
   }
 }
 const state = {
   cart: JSON.parse(uni.getStorageSync('cart') || '[]')
 }
 const getters = {
-  total(state) {
+  selectTotal(state) {
+    //1 筛选每一项的item.goods_count为1的
     let c = 0
+    let newCart = state.cart.filter(item=>{
+      return item.goods_state===true
+    })
+    newCart.forEach(item => {
+      return c += item.goods_count
+    })
+    return c
+  },
+  total(state){
+    let c=0
     state.cart.forEach(item => {
       return c += item.goods_count
     })
     return c
   },
+  totalPrice(state){
+    return state.cart.filter(item=>item.goods_state)
+    .reduce((total,item)=>total+=item.goods_count*item.goods_price,0).toFixed(2)
+  }
 }
 export default {
   actions,

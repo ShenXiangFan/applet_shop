@@ -4,14 +4,17 @@ export default{
     setBadge(){
       uni.setTabBarBadge({
         index:2,
-        text:this.total+''
+        text:this.selectTotal+''
       })
     }
   },
   computed:{
-    ...mapGetters(['total'])
+    ...mapGetters(['selectTotal'])
   },
-  onLoad(){
+  mounted(){
+    this.setBadge()
+  },
+  updated(){
     this.setBadge()
   }
 }
