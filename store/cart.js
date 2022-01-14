@@ -60,7 +60,7 @@ const mutations = {
   }
 }
 const state = {
-  cart: JSON.parse(uni.getStorageSync('cart') || '[]')
+  cart: JSON.parse(uni.getStorageSync('cart') || '[]'),
 }
 const getters = {
   selectTotal(state) {
@@ -83,7 +83,7 @@ const getters = {
   },
   totalPrice(state){
     return state.cart.filter(item=>item.goods_state)
-    .reduce((total,item)=>total+=item.goods_count*item.goods_price,0).toFixed(2)
+    .reduce((total,item)=>total+=item.goods_count*item.goods_price,0)
   }
 }
 export default {

@@ -45,11 +45,6 @@
       }
     },
     computed: {
-      ...mapState({
-        My_userInfo: (state) => {
-          return state.address
-        }
-      }),
       newAddress() {
         if (JSON.stringify(this.address) !== '{}') {
           let {

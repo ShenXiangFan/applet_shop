@@ -5,14 +5,22 @@ const actions = {
 }
 const mutations = {
   SAVAUSERINFO(state, data) {
-    uni.setStorageSync('address1', JSON.stringify(data))
+    console.log('111', state.address)
+    uni.setStorageSync('address1', JSON.stringify(state.address))
   }
 }
 const state = {
-  address: JSON.parse(uni.getStorageSync('address1') || '{}')
+  address: JSON.parse(uni.getStorageSync('address1') || '[]'),
+  token:''
+}
+const getters={
+  token1(state){
+    return state.token
+  }
 }
 export default {
   actions,
   mutations,
   state,
+  getters
 }

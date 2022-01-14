@@ -12,7 +12,7 @@
       </view>
       <!-- 结算按钮 -->
       <view class="submitCharge">
-        <button>结算({{selectTotal}})</button>
+        <button @click="settlement">结算({{selectTotal}})</button>
       </view>
     </view>
   </view>
@@ -26,13 +26,27 @@
   export default {
     data() {
       return {
-        tag: true
+        tag: true,
+        userInfo:JSON.parse(uni.getStorageSync('address1')||'{}')
       };
     },
     methods: {
       radioClick() {
         this.tag = !this.tag
         store.dispatch('changeAllTag', this.tag)
+      },
+      settlement(){
+        if(this.selectTotal === 0) return uni.$showMsg('请选择要结算的商品')
+        if(JSON.stringify(this.userInfo) === '{}') return uni.$showMsg('请选择用户地址')
+        if(!this.token){
+         uni.$showMsg('请登录')
+         setTimeout(()=>{
+           uni.switchTab({
+             url:'../../pages/mine/mine'
+           })
+           uni.hideLoading()
+         },1000)
+        }
       }
     },
     computed: {

@@ -11,7 +11,7 @@ export default{
   computed:{
     ...mapGetters(['selectTotal'])
   },
-  mounted(){
+  onLoad(){
     this.setBadge()
   },
   updated(){
