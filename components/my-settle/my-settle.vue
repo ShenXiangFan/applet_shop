@@ -20,46 +20,91 @@
 
 <script>
   import {
-    mapGetters
+    mapGetters,mapMutations,mapState
   } from 'vuex'
   import store from '@/store/index.js'
   export default {
     data() {
       return {
         tag: true,
-        userInfo:JSON.parse(uni.getStorageSync('address1')||'{}')
+        userInfo: JSON.parse(uni.getStorageSync('address1') || '{}'),
+        token:this.getToken,
+        seconds:3,
+        timer:null
       };
     },
     methods: {
+      ...mapMutations(['updateRedirectInfo']),
       radioClick() {
         this.tag = !this.tag
         store.dispatch('changeAllTag', this.tag)
       },
-      settlement(){
-        if(this.selectTotal === 0) return uni.$showMsg('请选择要结算的商品')
-        if(JSON.stringify(this.userInfo) === '{}') return uni.$showMsg('请选择用户地址')
-        if(!this.token){
-         uni.$showMsg('请登录')
-         setTimeout(()=>{
-           uni.switchTab({
-             url:'../../pages/mine/mine'
-           })
-           uni.hideLoading()
-         },1000)
+      settlement() {
+        if (this.selectTotal === 0) return uni.$showMsg('请选择要结算的商品')
+        if (JSON.stringify(this.myAddress) == '{}') return uni.$showMsg('请选择用户地址')
+        if (JSON.stringify(this.token) == '{}') {
+          return this.delayNavigate()
         }
+        // 支付订单
+        this.payOrder()
+      },
+      async payOrder(){
+        const orderInfo={
+          order_price:0.01,
+          consignee_addr:this.myAddress,
+          goods:this.myCartList.filter(x=>x.goods_state).map(item1=>({
+            goods_id:item1.goods_id,
+            goods_number:item1.goods_count,
+            goods_price:item1.goods_price,
+          }))
+        }
+        const res = await uni.$http.post('/api/public/v1/my/orders/create',orderInfo)
+        console.log(res)
+      },
+      delayNavigate(){
+        this.seconds=3
+        this.showTips(this.seconds);
+        this.timer = setInterval(()=>{
+          this.seconds--
+          if(this.seconds<=0){
+            clearInterval(this.timer)
+            uni.switchTab({
+              url:'/pages/mine/mine',
+              success: () => {
+                this.updateRedirectInfo({
+                  openTypr:'switchBar',
+                  from:'/pages/cart/cart'
+                })
+              }
+            })
+            return   
+          }
+          this.showTips(this.seconds)
+        },1000)
+      },
+      showTips(sec){
+        uni.showToast({
+          icon:'none',
+          title:'请登陆后再结算！还差'+sec+'s跳转到登录页',
+          mask:true,
+          duration:1500
+        })
       }
     },
     computed: {
-      ...mapGetters(['selectTotal', 'total','totalPrice'])
+      ...mapGetters(['selectTotal', 'total', 'totalPrice']),
+      ...mapGetters(['getToken']),
+      ...mapGetters(['myAddress']),
+      ...mapGetters(['myCartList'])
     },
-    watch:{
-      selectTotal:{
-        immediate:true,
-        handler(){
-          if((this.selectTotal-0) === (this.total-0)){
-            this.tag=true
-          }else{
-            this.tag=false
+    watch: {
+      selectTotal: {
+        immediate: true,
+        handler() {
+          if ((this.selectTotal - 0) === (this.total - 0)) {
+            this.tag = true
+          } else {
+            this.tag = false
           }
         }
       }

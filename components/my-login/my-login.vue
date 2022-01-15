@@ -12,7 +12,7 @@
 
 <script>
   import store from '@/store/index.js'
-  import {mapState,mapGetters} from 'vuex'
+  import {mapState,mapGetters,mapMutations} from 'vuex'
   export default {
     data() {
       return {
@@ -20,6 +20,7 @@
       };
     },
     methods: {
+      ...mapMutations(['updateRedirectInfo','UPDATATOKEN']),
       getUserProfile() {
         uni.getUserProfile({
           desc: '你的授权信息',
@@ -27,9 +28,6 @@
             // 将信息存到 vuex 中
             this.updateUserInfo(res.userInfo)
             this.getToken(res)
-          },
-          fail: (res) => {
-            return uni.$showMsg('您取消了登录授权')
           }
         })
       },
@@ -51,11 +49,19 @@
         const {data:loginResult} = await uni.$http.post('/api/public/v1/users/wxlogin',query)
         if(loginResult.meta.status !== 400) return uni.$showMsg('登录失败')
         uni.$showMsg('登陆成功')
-        store.dispatch('updataToken',{name:'sxf'})
+        // store.dispatch('updataToken',{name:'sxf'})
+        this.UPDATATOKEN({name:'sxf'})
+        if(this.redirectInfo){
+          this.navigateBack()
+        }
       }
     },
     computed:{
-      ...mapGetters(['userLoginInfo'])
+      ...mapGetters(['userLoginInfo']),
+      ...mapState(['redirectInfo'])
+    },
+    mounted(){
+      this.getUserProfile()
     }
   }
 </script>

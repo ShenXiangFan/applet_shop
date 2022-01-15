@@ -26,7 +26,7 @@
 
 <script>
   import {
-    mapState
+    mapState,mapGetters
   } from 'vuex'
   import badgeMix from '@/mixins/tabbar-badge.js'
   import store from '@/store/index.js'
@@ -47,7 +47,8 @@
         cartList: (state) => {
           return state.cart
         },
-      })
+      }),
+      ...mapGetters(['myAddress'])
     },
     methods: {
       raiodChange(e) {

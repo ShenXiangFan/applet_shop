@@ -1,6 +1,6 @@
 <template>
   <view>
-    <view class="address-choose-box" v-if="JSON.stringify(address) === '{}'">
+    <view class="address-choose-box" v-if="JSON.stringify(myAddress) === '{}'">
       <button type="primary" size="mini" class="address-choose-button" @click="addAddress">请选择收货地址</button>
     </view>
     <!-- 渲染收货信息的盒子 -->
@@ -8,10 +8,10 @@
       <!-- 第一行 -->
       <view class="row1">
         <view class="row1-left">
-          <text>收货人:{{address.userName}}</text>
+          <text>收货人:{{myAddress.userName}}</text>
         </view>
         <view class="row1-right">
-          <text>电话:{{address.telNumber}}</text>
+          <text>电话:{{myAddress.telNumber}}</text>
           <uni-icons type="arrowright" size="16"></uni-icons>
         </view>
       </view>
@@ -26,41 +26,36 @@
 
 <script>
   import {
-    mapState
+    mapState,mapGetters
   } from 'vuex'
   import store from '@/store/index.js';
   export default {
     data() {
       return {
-        address: {}
       };
     },
     methods: {
       async addAddress() {
         const [err, suc] = await uni.chooseAddress()
         if (err === null && suc.errMsg === "chooseAddress:ok"){
-          this.address=suc
           store.dispatch('savaUserInfo', suc)
         }
       }
     },
     computed: {
+      ...mapGetters(['myAddress']),
       newAddress() {
-        if (JSON.stringify(this.address) !== '{}') {
+        if (this.myAddress !== '{}') {
           let {
             provinceName,
             cityName,
             countyName,
             detailInfo
-          } = this.address
+          } = this.myAddress
           let newAddress = `${provinceName}${cityName}${countyName}${detailInfo}`
           return newAddress
         }
       }
-    },
-    created(){
-      this.address=JSON.parse(uni.getStorageSync('address1') || {})
-      console.log('111')
     }
   }
 </script>

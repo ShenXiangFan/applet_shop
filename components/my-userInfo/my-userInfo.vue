@@ -89,9 +89,6 @@
     computed: {
       ...mapGetters(['userLoginInfo'])
     },
-    mounted() {
-      console.log(this.userLoginInfo)
-    },
     methods:{
       //退出登录
       async logout(){

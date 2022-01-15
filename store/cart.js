@@ -84,6 +84,9 @@ const getters = {
   totalPrice(state){
     return state.cart.filter(item=>item.goods_state)
     .reduce((total,item)=>total+=item.goods_count*item.goods_price,0)
+  },
+  myCartList(state){
+    return state.cart
   }
 }
 export default {

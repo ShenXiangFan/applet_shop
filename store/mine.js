@@ -19,6 +19,7 @@ const mutations={
   },
   LOGOUTUPDATATOKEN(state){
     state.token={}
+    uni.setStorageSync('token','{}')
   }
 }
 const state={
@@ -29,7 +30,7 @@ const getters={
   userLoginInfo(state){
     return state.userLoginInfo
   },
-  token(state){
+  getToken(state){
     return state.token
   }
 }
